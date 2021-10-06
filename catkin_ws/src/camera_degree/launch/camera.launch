@@ -1,0 +1,5 @@
+<launch>
+	<include file="$(find ros_deep_learning)/launch/detectnet.ros1.launch"/>
+    <node pkg="camera_degree" type="camera_degree_node" name="camera_degree"/>
+
+</launch>

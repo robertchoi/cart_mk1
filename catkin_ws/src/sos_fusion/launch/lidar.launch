@@ -1,0 +1,5 @@
+<launch>
+	<include file="$(find rplidar_ros)/launch/rplidar_a3.launch"/>
+    <node pkg="sos_fusion" type="clustering" name="clustering_node"/>
+    <node pkg="sos_fusion" type="fusion" name="fusion_node"/>
+</launch>

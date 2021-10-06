@@ -1,0 +1,45 @@
+<launch>
+
+    <param name="use_sim_time" value="false"/>
+    
+    <!-- lidar operation -->
+    <include file="$(find rplidar_ros)/launch/two_lidars.launch" />
+
+    <!-- front lidar -->
+    <node pkg="rplidar_filter" type="rp_vehicle_front_roi" name="rp_vehicle_front_roi_node"/>
+    <include file="$(find leg_tracker)/launch/joint_leg_tracker.launch" />
+
+    <!-- back lidar -->
+    <node pkg="rplidar_filter" type="rp_vehicle_back_roi" name="rp_vehicle_back_roi_node"/>
+    <node pkg="rplidar_filter" type="rp_cluster" name="rp_cluster_node"/>
+
+
+    <!-- camera find person -->
+    <!-- <node pkg="cv_camera" type="cv_camera_node" name="cv_camera">
+        <param name="flip_image" value="false" />
+        <param name="device_id" value="2" />
+        <param name="image_width" value="640" />
+        <param name="image_height" value="480" />
+    </node>
+    <include file="$(find yolov3_pytorch_ros)/launch/detector.launch" /> -->
+
+    
+    <!-- cart main -->
+    <node pkg="ros_servo" type="ros_control" name="ros_control_node" output="screen"/>
+
+
+    <!-- arduino joystick -->
+    <!-- <node name="serial_node1" pkg="rosserial_python" type="serial_node.py">
+    <param name="port" value="/dev/ttyACM1" />
+    <param name="baud" value="57600" />
+    </node> -->
+
+    <!-- arduino cart control -->
+    <node name="serial_node" pkg="rosserial_python" type="serial_node.py" >
+    <param name="port" value="/dev/ttyACM0" />
+    <param name="baud" value="57600" />
+    </node>
+
+    <node pkg="rviz" type="rviz" name="rviz" output="screen" args="-d $(find ros_servo)/rviz/run_all.rviz"/>
+
+</launch>
